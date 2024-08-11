@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { login } from '../services/auth.service';
 import '../styles/Auth.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -13,9 +15,12 @@ const Login = () => {
     try {
       const userData = await login(email, password);
       // Handle successful login (e.g., store token, redirect)
+      toast.success('Logged in successfully!');
       console.log('Logged in:', userData);
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred');
+      const errorMessage = err.response?.data?.message || 'An error occurred';
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
